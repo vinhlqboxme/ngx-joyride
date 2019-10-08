@@ -2,10 +2,10 @@ import { Injectable, TemplateRef } from "@angular/core";
 
 @Injectable()
 export class TemplatesService {
-    protected _prevButton: TemplateRef<any>;
-    protected _nextButton: TemplateRef<any>;
-    protected _doneButton: TemplateRef<any>;
-    protected _counter: TemplateRef<any>;
+    public _prevButton: TemplateRef<any>;
+    public _nextButton: TemplateRef<any>;
+    public _doneButton: TemplateRef<any>;
+    public _counter: TemplateRef<any>;
     
     setPrevButton(template: TemplateRef<any>) {
         this._prevButton = template;

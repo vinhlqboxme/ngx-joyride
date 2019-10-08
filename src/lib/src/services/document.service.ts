@@ -21,9 +21,9 @@ export interface IDocumentService {
 
 @Injectable()
 export class DocumentService implements IDocumentService {
-    protected documentHeight: number;
+    public documentHeight: number;
 
-    constructor(protected readonly DOMService: DomRefService) {
+    constructor(public readonly DOMService: DomRefService) {
         this.setDocumentHeight();
         if (!document.elementsFromPoint) {
             // IE 11 - Edge browsers
@@ -123,7 +123,7 @@ export class DocumentService implements IDocumentService {
         }
     }
 
-    protected getFirstScrollableParent(node: any) {
+    public getFirstScrollableParent(node: any) {
         const regex = /(auto|scroll|overlay)/;
 
         const style = (node: any, prop: any) =>
@@ -144,7 +144,7 @@ export class DocumentService implements IDocumentService {
         return scrollparent(node);
     }
 
-    protected calculateDocumentHeight() {
+    public calculateDocumentHeight() {
         const documentRef = this.DOMService.getNativeDocument();
         return Math.max(
             documentRef.body.scrollHeight,
@@ -156,7 +156,7 @@ export class DocumentService implements IDocumentService {
         );
     }
 
-    protected getScrollOffsets() {
+    public getScrollOffsets() {
         const winReference = this.DOMService.getNativeWindow();
         const docReference = this.DOMService.getNativeDocument();
 
@@ -174,7 +174,7 @@ export class DocumentService implements IDocumentService {
         return { x: docReference.body.scrollLeft, y: docReference.body.scrollTop };
     }
 
-    protected elementsFromPoint(x, y) {
+    public elementsFromPoint(x, y) {
         var parents = [];
         var parent = void 0;
         do {
@@ -193,7 +193,7 @@ export class DocumentService implements IDocumentService {
         return parents;
     }
 
-    protected getFirstElementWithoutKeyword(elements: Element[], keyword: string): Element {
+    public getFirstElementWithoutKeyword(elements: Element[], keyword: string): Element {
         while (elements[0] && elements[0].classList.toString().includes(keyword)) {
             elements.shift();
         }

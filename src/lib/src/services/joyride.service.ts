@@ -9,13 +9,13 @@ import { isPlatformBrowser } from '@angular/common';
 
 @Injectable()
 export class JoyrideService {
-    protected tourInProgress: boolean = false;
-    protected tour$: Observable<JoyrideStepInfo>;
+    public tourInProgress: boolean = false;
+    public tour$: Observable<JoyrideStepInfo>;
 
     constructor(
-        @Inject(PLATFORM_ID) protected platformId: Object,
-        protected readonly stepService: JoyrideStepService,
-        protected readonly optionsService: JoyrideOptionsService
+        @Inject(PLATFORM_ID) public platformId: Object,
+        public readonly stepService: JoyrideStepService,
+        public readonly optionsService: JoyrideOptionsService
     ) {}
 
     startTour(options?: JoyrideOptions): Observable<JoyrideStepInfo> {

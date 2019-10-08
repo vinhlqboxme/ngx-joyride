@@ -679,7 +679,7 @@ describe('JoyrideStepComponent', () => {
     });
 
     describe('autofixTopPosition()', () => {
-        // TODO: Improve these tests since they are calling a private method
+        // TODO: Improve these tests since they are calling a public method
         it(`should NOT log 'No step positions found...' if called once`, () => {
             childComponent['autofixTopPosition']();
             expect(logger.warn).not.toHaveBeenCalled();

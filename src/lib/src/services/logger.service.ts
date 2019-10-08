@@ -6,7 +6,7 @@ const JOYRIDE = 'ngx-joyride:::';
 @Injectable()
 export class LoggerService {
 
-    constructor(protected readonly optionService: JoyrideOptionsService) { }
+    constructor(public readonly optionService: JoyrideOptionsService) { }
 
     debug(message?: string, data: any = "") {
         if (this.optionService.areLogsEnabled()) {

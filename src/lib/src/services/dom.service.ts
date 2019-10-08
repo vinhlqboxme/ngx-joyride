@@ -3,9 +3,9 @@ import { isPlatformBrowser } from '@angular/common';
 
 @Injectable()
 export class DomRefService {
-    protected fakeDocument: Document = <Document>{ body: {}, documentElement: {} };
-    protected fakeWindow: Window = <Window>{ document: this.fakeDocument, navigator: {} };
-    constructor(@Inject(PLATFORM_ID) protected platformId: Object) {}
+    public fakeDocument: Document = <Document>{ body: {}, documentElement: {} };
+    public fakeWindow: Window = <Window>{ document: this.fakeDocument, navigator: {} };
+    constructor(@Inject(PLATFORM_ID) public platformId: Object) {}
     getNativeWindow(): Window {
         if (isPlatformBrowser(this.platformId)) return window;
         else return this.fakeWindow;

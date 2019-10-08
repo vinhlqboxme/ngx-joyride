@@ -70,17 +70,17 @@ export class JoyrideDirective implements AfterViewInit, OnChanges, OnDestroy {
     @Output()
     done?: EventEmitter<any> = new EventEmitter<any>();
 
-    protected windowRef: Window;
-    protected step: JoyrideStep;
-    protected subscriptions: Subscription[] = [];
+    public windowRef: Window;
+    public step: JoyrideStep;
+    public subscriptions: Subscription[] = [];
 
     constructor(
-        protected readonly joyrideStepsContainer: JoyrideStepsContainerService,
-        protected viewContainerRef: ViewContainerRef,
-        protected readonly domService: DomRefService,
-        protected readonly router: Router,
-        protected readonly templateService: TemplatesService,
-        @Inject(PLATFORM_ID) protected platformId: Object
+        public readonly joyrideStepsContainer: JoyrideStepsContainerService,
+        public viewContainerRef: ViewContainerRef,
+        public readonly domService: DomRefService,
+        public readonly router: Router,
+        public readonly templateService: TemplatesService,
+        @Inject(PLATFORM_ID) public platformId: Object
     ) {
         this.windowRef = this.domService.getNativeWindow();
         this.step = new JoyrideStep();
@@ -117,11 +117,11 @@ export class JoyrideDirective implements AfterViewInit, OnChanges, OnDestroy {
         }
     }
 
-    protected isElementFixed(element: ElementRef) {
+    public isElementFixed(element: ElementRef) {
         return this.windowRef.getComputedStyle(element.nativeElement).position === 'fixed';
     }
 
-    protected setAsyncFields(step: JoyrideStep) {
+    public setAsyncFields(step: JoyrideStep) {
         if (this.title instanceof Observable) {
             this.subscriptions.push(
                 this.title.subscribe(title => {
@@ -142,7 +142,7 @@ export class JoyrideDirective implements AfterViewInit, OnChanges, OnDestroy {
         }
     }
 
-    protected isAncestorsFixed(nativeElement: any): boolean {
+    public isAncestorsFixed(nativeElement: any): boolean {
         if (!nativeElement || !nativeElement.parentElement) return false;
         let isElementFixed = this.windowRef.getComputedStyle(nativeElement.parentElement).position === 'fixed';
         if (nativeElement.nodeName === 'BODY') {

@@ -35,15 +35,15 @@ export interface IJoyrideOptionsService {
 
 @Injectable()
 export class JoyrideOptionsService implements IJoyrideOptionsService {
-    protected themeColor: string = DEFAULT_THEME_COLOR;
-    protected stepDefaultPosition: string = STEP_DEFAULT_POSITION;
-    protected logsEnabled: boolean = true;
-    protected showCounter: boolean = true;
-    protected showPrevButton: boolean = true;
-    protected stepsOrder: string[] = [];
-    protected firstStep: string;
-    protected waitingTime: number;
-    protected customTexts: ObservableCustomTexts;
+    public themeColor: string = DEFAULT_THEME_COLOR;
+    public stepDefaultPosition: string = STEP_DEFAULT_POSITION;
+    public logsEnabled: boolean = true;
+    public showCounter: boolean = true;
+    public showPrevButton: boolean = true;
+    public stepsOrder: string[] = [];
+    public firstStep: string;
+    public waitingTime: number;
+    public customTexts: ObservableCustomTexts;
 
     setOptions(options: JoyrideOptions) {
         this.stepsOrder = options.steps;
@@ -97,7 +97,7 @@ export class JoyrideOptionsService implements IJoyrideOptionsService {
         return this.customTexts;
     }
 
-    protected setCustomText(texts: CustomTexts) {
+    public setCustomText(texts: CustomTexts) {
         let prev, next, done, close: string | Observable<string>;
         prev = texts.prev ? texts.prev : DEFAULT_TEXTS.prev;
         next = texts.next ? texts.next : DEFAULT_TEXTS.next;
@@ -111,11 +111,11 @@ export class JoyrideOptionsService implements IJoyrideOptionsService {
         };
     }
 
-    protected toObservable(value: string | Observable<string>) {
+    public toObservable(value: string | Observable<string>) {
         return value instanceof Observable ? value : of(value);
     }
 
-    protected hexToRgb(hex: any): string {
+    public hexToRgb(hex: any): string {
         var shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
         hex = hex.replace(shorthandRegex, (m: any, r: any, g: any, b: any) => {
             return r + r + g + g + b + b;
