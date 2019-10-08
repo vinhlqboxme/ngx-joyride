@@ -9,14 +9,14 @@ export class Scroll {
 
 @Injectable()
 export class EventListenerService {
-    private renderer: Renderer2;
-    private scrollUnlisten: any;
-    private resizeUnlisten: any;
+    protected renderer: Renderer2;
+    protected scrollUnlisten: any;
+    protected resizeUnlisten: any;
 
     scrollEvent: Subject<Scroll> = new Subject<Scroll>();
     resizeEvent: Subject<number> = new Subject<number>();
 
-    constructor(private readonly rendererFactory: RendererFactory2, private readonly DOMService: DomRefService) {
+    constructor(protected readonly rendererFactory: RendererFactory2, protected readonly DOMService: DomRefService) {
         this.renderer = rendererFactory.createRenderer(null, null);
     }
 

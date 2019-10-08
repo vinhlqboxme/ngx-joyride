@@ -28,33 +28,33 @@ export interface IJoyrideStepService {
 
 @Injectable()
 export class JoyrideStepService implements IJoyrideStepService {
-    private currentStep: JoyrideStep;
-    private winTopPosition: number = 0;
-    private winBottomPosition: number = 0;
-    private stepsObserver: ReplaySubject<JoyrideStepInfo> = new ReplaySubject<JoyrideStepInfo>();
+    protected currentStep: JoyrideStep;
+    protected winTopPosition: number = 0;
+    protected winBottomPosition: number = 0;
+    protected stepsObserver: ReplaySubject<JoyrideStepInfo> = new ReplaySubject<JoyrideStepInfo>();
 
     constructor(
-        private readonly backDropService: JoyrideBackdropService,
-        private readonly eventListener: EventListenerService,
-        private readonly stepsContainerService: JoyrideStepsContainerService,
-        private readonly documentService: DocumentService,
-        private readonly DOMService: DomRefService,
-        private readonly stepDrawerService: StepDrawerService,
-        private readonly optionsService: JoyrideOptionsService,
-        private readonly router: Router,
-        private readonly logger: LoggerService
+        protected readonly backDropService: JoyrideBackdropService,
+        protected readonly eventListener: EventListenerService,
+        protected readonly stepsContainerService: JoyrideStepsContainerService,
+        protected readonly documentService: DocumentService,
+        protected readonly DOMService: DomRefService,
+        protected readonly stepDrawerService: StepDrawerService,
+        protected readonly optionsService: JoyrideOptionsService,
+        protected readonly router: Router,
+        protected readonly logger: LoggerService
     ) {
         this.initViewportPositions();
         this.subscribeToScrollEvents();
         this.subscribeToResizeEvents();
     }
 
-    private initViewportPositions() {
+    protected initViewportPositions() {
         this.winTopPosition = 0;
         this.winBottomPosition = this.DOMService.getNativeWindow().innerHeight - SCROLLBAR_SIZE;
     }
 
-    private subscribeToScrollEvents() {
+    protected subscribeToScrollEvents() {
         this.eventListener.startListeningScrollEvents();
         this.eventListener.scrollEvent.subscribe(scroll => {
             this.winTopPosition = scroll.scrollY;
@@ -63,13 +63,13 @@ export class JoyrideStepService implements IJoyrideStepService {
         });
     }
 
-    private subscribeToResizeEvents() {
+    protected subscribeToResizeEvents() {
         this.eventListener.resizeEvent.subscribe(() => {
             if (this.currentStep) this.backDropService.redrawTarget(this.currentStep);
         });
     }
 
-    private drawStep(step: JoyrideStep) {
+    protected drawStep(step: JoyrideStep) {
         step.position = step.position === NO_POSITION ? this.optionsService.getStepDefaultPosition() : step.position;
         this.stepDrawerService.draw(step);
     }
@@ -105,14 +105,14 @@ export class JoyrideStepService implements IJoyrideStepService {
         this.tryShowStep(StepActionType.NEXT);
     }
 
-    private navigateToStepPage(action: StepActionType) {
+    protected navigateToStepPage(action: StepActionType) {
         let stepRoute = this.stepsContainerService.getStepRoute(action);
         if (stepRoute) {
             this.router.navigate([stepRoute]);
         }
     }
 
-    private subscribeToStepsUpdates() {
+    protected subscribeToStepsUpdates() {
         this.stepsContainerService.stepHasBeenModified.subscribe(updatedStep => {
             if (this.currentStep && this.currentStep.name === updatedStep.name) {
                 this.currentStep = updatedStep;
@@ -120,7 +120,7 @@ export class JoyrideStepService implements IJoyrideStepService {
         });
     }
 
-    private tryShowStep(actionType: StepActionType) {
+    protected tryShowStep(actionType: StepActionType) {
         this.navigateToStepPage(actionType);
         const timeout = this.optionsService.getWaitingTime();
         if (timeout > 100) this.backDropService.remove();
@@ -140,7 +140,7 @@ export class JoyrideStepService implements IJoyrideStepService {
         }, timeout);
     }
 
-    private showStep(actionType: StepActionType) {
+    protected showStep(actionType: StepActionType) {
         this.currentStep = this.stepsContainerService.get(actionType);
 
         if (this.currentStep == null) throw new JoyrideStepDoesNotExist('');
@@ -152,7 +152,7 @@ export class JoyrideStepService implements IJoyrideStepService {
         this.notifyStepClicked(actionType);
     }
 
-    private notifyStepClicked(actionType: StepActionType) {
+    protected notifyStepClicked(actionType: StepActionType) {
         let stepInfo: JoyrideStepInfo = {
             number: this.stepsContainerService.getStepNumber(this.currentStep.name),
             name: this.currentStep.name,
@@ -162,34 +162,34 @@ export class JoyrideStepService implements IJoyrideStepService {
         this.stepsObserver.next(stepInfo);
     }
 
-    private notifyTourIsFinished() {
+    protected notifyTourIsFinished() {
         if (this.currentStep) this.currentStep.tourDone.emit();
         this.stepsObserver.complete();
     }
-    private removeCurrentStep() {
+    protected removeCurrentStep() {
         if (this.currentStep) this.stepDrawerService.remove(this.currentStep);
     }
 
-    private scrollIfStepAndTargetAreNotVisible() {
+    protected scrollIfStepAndTargetAreNotVisible() {
         this.scrollWhenTargetOrStepAreHiddenBottom();
         this.scrollWhenTargetOrStepAreHiddenTop();
     }
 
-    private scrollWhenTargetOrStepAreHiddenBottom() {
+    protected scrollWhenTargetOrStepAreHiddenBottom() {
         let totalTargetBottom = this.getMaxTargetAndStepBottomPosition();
         if (totalTargetBottom > this.winBottomPosition) {
             this.DOMService.getNativeWindow().scrollBy(0, totalTargetBottom - this.winBottomPosition);
         }
     }
 
-    private scrollWhenTargetOrStepAreHiddenTop() {
+    protected scrollWhenTargetOrStepAreHiddenTop() {
         let totalTargetTop = this.getMaxTargetAndStepTopPosition();
         if (totalTargetTop < this.winTopPosition) {
             this.DOMService.getNativeWindow().scrollBy(0, totalTargetTop - this.winTopPosition);
         }
     }
 
-    private getMaxTargetAndStepBottomPosition(): number {
+    protected getMaxTargetAndStepBottomPosition(): number {
         let targetAbsoluteTop = this.documentService.getElementAbsoluteTop(this.currentStep.targetViewContainer.element);
         if (this.currentStep.position === 'top') {
             return targetAbsoluteTop + this.currentStep.stepInstance.targetHeight;
@@ -209,7 +209,7 @@ export class JoyrideStepService implements IJoyrideStepService {
         }
     }
 
-    private getMaxTargetAndStepTopPosition() {
+    protected getMaxTargetAndStepTopPosition() {
         let targetAbsoluteTop = this.documentService.getElementAbsoluteTop(this.currentStep.targetViewContainer.element);
         if (this.currentStep.position === 'top') {
             return targetAbsoluteTop - (this.currentStep.stepInstance.stepHeight + ARROW_SIZE + DISTANCE_FROM_TARGET);
@@ -223,7 +223,7 @@ export class JoyrideStepService implements IJoyrideStepService {
         }
     }
 
-    private scrollIfElementBeyondOtherElements() {
+    protected scrollIfElementBeyondOtherElements() {
         if (this.isElementBeyondOthers() === 2) {
             this.documentService.scrollToTheTop(this.currentStep.targetViewContainer.element);
         }
@@ -238,7 +238,7 @@ export class JoyrideStepService implements IJoyrideStepService {
         }
     }
 
-    private isElementBeyondOthers() {
+    protected isElementBeyondOthers() {
         return this.documentService.isElementBeyondOthers(
             this.currentStep.targetViewContainer.element,
             this.currentStep.isElementOrAncestorFixed,

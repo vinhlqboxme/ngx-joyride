@@ -6,32 +6,32 @@ import { JoyrideStep } from '../models/joyride-step.class';
 
 @Injectable()
 export class JoyrideBackdropService {
-    private renderer: Renderer2;
-    private currentBackdropContainer: any;
-    private lastBackdropContainer: any;
-    private backdropContent: any;
-    private backdropTop: any;
-    private backdropBottom: any;
-    private backdropMiddleContainer: any;
-    private backdropMiddleContent: any;
-    private leftBackdrop: any;
-    private targetBackdrop: any;
-    private rightBackdrop: any;
-    private elementRef: ViewContainerRef;
-    private targetAbsoluteTop: number;
-    private targetAbsoluteLeft: number;
-    private lastXScroll: number = 0;
-    private lastYScroll: number = 0;
+    protected renderer: Renderer2;
+    protected currentBackdropContainer: any;
+    protected lastBackdropContainer: any;
+    protected backdropContent: any;
+    protected backdropTop: any;
+    protected backdropBottom: any;
+    protected backdropMiddleContainer: any;
+    protected backdropMiddleContent: any;
+    protected leftBackdrop: any;
+    protected targetBackdrop: any;
+    protected rightBackdrop: any;
+    protected elementRef: ViewContainerRef;
+    protected targetAbsoluteTop: number;
+    protected targetAbsoluteLeft: number;
+    protected lastXScroll: number = 0;
+    protected lastYScroll: number = 0;
 
     constructor(
-        private readonly documentService: DocumentService,
-        private readonly optionsService: JoyrideOptionsService,
-        private readonly rendererFactory: RendererFactory2
+        protected readonly documentService: DocumentService,
+        protected readonly optionsService: JoyrideOptionsService,
+        protected readonly rendererFactory: RendererFactory2
     ) {
         this.setRenderer();
     }
 
-    private setRenderer() {
+    protected setRenderer() {
         this.renderer = this.rendererFactory.createRenderer(null, null);
     }
 
@@ -126,14 +126,14 @@ export class JoyrideBackdropService {
         this.handleHorizontalScroll(step);
     }
 
-    private getTargetTotalTop(step: JoyrideStep) {
+    protected getTargetTotalTop(step: JoyrideStep) {
         let targetVC = step.targetViewContainer;
         return step.isElementOrAncestorFixed
             ? this.documentService.getElementFixedTop(targetVC.element)
             : this.documentService.getElementAbsoluteTop(targetVC.element);
     }
 
-    private getTargetTotalLeft(step: JoyrideStep) {
+    protected getTargetTotalLeft(step: JoyrideStep) {
         let targetVC = step.targetViewContainer;
 
         return step.isElementOrAncestorFixed
@@ -155,7 +155,7 @@ export class JoyrideBackdropService {
         }
     }
 
-    private handleHorizontalScroll(step: JoyrideStep) {
+    protected handleHorizontalScroll(step: JoyrideStep) {
         let newBackdropLeftWidth = step.isElementOrAncestorFixed ? this.targetAbsoluteLeft : this.targetAbsoluteLeft - this.lastXScroll;
 
         if (newBackdropLeftWidth >= 0) {
@@ -166,7 +166,7 @@ export class JoyrideBackdropService {
         }
     }
 
-    private handleTargetPartialWidth(newBackdropLeftWidth: number) {
+    protected handleTargetPartialWidth(newBackdropLeftWidth: number) {
         this.renderer.setStyle(this.leftBackdrop, 'width', 0 + 'px');
         let visibleTargetWidth = this.elementRef.element.nativeElement.offsetWidth + newBackdropLeftWidth;
         if (visibleTargetWidth >= 0) {
@@ -176,7 +176,7 @@ export class JoyrideBackdropService {
         }
     }
 
-    private handleVerticalScroll(step: JoyrideStep) {
+    protected handleVerticalScroll(step: JoyrideStep) {
         let newBackdropTopHeight = step.isElementOrAncestorFixed ? this.targetAbsoluteTop : this.targetAbsoluteTop - this.lastYScroll;
 
         if (newBackdropTopHeight >= 0) {
@@ -187,7 +187,7 @@ export class JoyrideBackdropService {
         }
     }
 
-    private handleTargetPartialHeight(newBackdropTopHeight: number) {
+    protected handleTargetPartialHeight(newBackdropTopHeight: number) {
         this.renderer.setStyle(this.backdropTop, 'height', 0 + 'px');
         let visibleTargetHeight = this.elementRef.element.nativeElement.offsetHeight + newBackdropTopHeight;
         if (visibleTargetHeight >= 0) {
@@ -197,14 +197,14 @@ export class JoyrideBackdropService {
         }
     }
 
-    private removeLastBackdrop() {
+    protected removeLastBackdrop() {
         if (this.lastBackdropContainer) {
             this.renderer.removeChild(document.body, this.lastBackdropContainer);
             this.lastBackdropContainer = undefined;
         }
     }
 
-    private drawCurrentBackdrop() {
+    protected drawCurrentBackdrop() {
         this.renderer.appendChild(document.body, this.currentBackdropContainer);
     }
 }

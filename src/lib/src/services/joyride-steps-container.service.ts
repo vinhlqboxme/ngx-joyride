@@ -19,14 +19,14 @@ export enum StepActionType {
 
 @Injectable()
 export class JoyrideStepsContainerService {
-    private steps: Step[];
-    private tempSteps: JoyrideStep[] = [];
-    private currentStepIndex: number = -2;
+    protected steps: Step[];
+    protected tempSteps: JoyrideStep[] = [];
+    protected currentStepIndex: number = -2;
     stepHasBeenModified: Subject<JoyrideStep> = new Subject<JoyrideStep>();
 
-    constructor(private readonly stepOptions: JoyrideOptionsService, private readonly logger: LoggerService) {}
+    constructor(protected readonly stepOptions: JoyrideOptionsService, protected readonly logger: LoggerService) {}
 
-    private getFirstStepIndex(): number {
+    protected getFirstStepIndex(): number {
         let firstStep = this.stepOptions.getFirstStep();
         let stepIds = this.stepOptions.getStepsOrder();
 
@@ -108,7 +108,7 @@ export class JoyrideStepsContainerService {
         return stepsOrder.length;
     }
 
-    private getStepIndex(stepName: string): number {
+    protected getStepIndex(stepName: string): number {
         const index = this.steps
             .map(step => (step.id.includes(ROUTE_SEPARATOR) ? step.id.split(ROUTE_SEPARATOR)[0] : step.id))
             .findIndex(name => stepName === name);
@@ -116,7 +116,7 @@ export class JoyrideStepsContainerService {
         return index;
     }
 
-    private getStepName(stepID: string): string {
+    protected getStepName(stepID: string): string {
         let stepName = stepID && stepID.includes(ROUTE_SEPARATOR) ? stepID.split(ROUTE_SEPARATOR)[0] : stepID;
         return stepName;
     }

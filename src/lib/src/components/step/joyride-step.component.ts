@@ -60,19 +60,19 @@ export class JoyrideStepComponent implements OnInit, OnDestroy, AfterViewInit {
     counterData: any;
     ctx: Object;
 
-    private arrowSize: number = ARROW_SIZE;
-    private stepAbsoluteLeft: number;
-    private stepAbsoluteTop: number;
-    private targetWidth: number;
+    protected arrowSize: number = ARROW_SIZE;
+    protected stepAbsoluteLeft: number;
+    protected stepAbsoluteTop: number;
+    protected targetWidth: number;
     targetHeight: number;
-    private targetAbsoluteLeft: number;
-    private targetAbsoluteTop: number;
+    protected targetAbsoluteLeft: number;
+    protected targetAbsoluteTop: number;
 
-    private subscriptions: Subscription[] = [];
+    protected subscriptions: Subscription[] = [];
     joyrideStepService: IJoyrideStepService;
 
-    private positionAlreadyFixed: boolean;
-    private documentHeight: number;
+    protected positionAlreadyFixed: boolean;
+    protected documentHeight: number;
 
     prevText: Observable<string>;
     nextText: Observable<string>;
@@ -83,14 +83,14 @@ export class JoyrideStepComponent implements OnInit, OnDestroy, AfterViewInit {
     @ViewChild('stepContainer') stepContainer: ElementRef;
 
     constructor(
-        private injector: Injector,
-        private readonly stepsContainerService: JoyrideStepsContainerService,
-        private readonly eventListenerService: EventListenerService,
-        private readonly documentService: DocumentService,
-        private readonly renderer: Renderer2,
-        private readonly logger: LoggerService,
-        private readonly optionsService: JoyrideOptionsService,
-        private readonly templateService: TemplatesService
+        protected injector: Injector,
+        protected readonly stepsContainerService: JoyrideStepsContainerService,
+        protected readonly eventListenerService: EventListenerService,
+        protected readonly documentService: DocumentService,
+        protected readonly renderer: Renderer2,
+        protected readonly logger: LoggerService,
+        protected readonly optionsService: JoyrideOptionsService,
+        protected readonly templateService: TemplatesService
     ) {}
 
     ngOnInit(): void {
@@ -134,7 +134,7 @@ export class JoyrideStepComponent implements OnInit, OnDestroy, AfterViewInit {
         this.drawStep();
     }
 
-    private checkRedraw(val) {
+    protected checkRedraw(val) {
         if (val != null) {
             // Need to wait that the change is rendered before redrawing
             setTimeout(() => {
@@ -143,7 +143,7 @@ export class JoyrideStepComponent implements OnInit, OnDestroy, AfterViewInit {
         }
     }
 
-    private isCustomized() {
+    protected isCustomized() {
         return (
             this.step.stepContent ||
             this.templateService.getCounter() ||
@@ -153,14 +153,14 @@ export class JoyrideStepComponent implements OnInit, OnDestroy, AfterViewInit {
         );
     }
 
-    private setCustomTexts() {
+    protected setCustomTexts() {
         const customeTexts = this.optionsService.getCustomTexts();
         this.prevText = customeTexts.prev;
         this.nextText = customeTexts.next;
         this.doneText = customeTexts.done;
     }
 
-    private drawStep() {
+    protected drawStep() {
         let position = this.step.isElementOrAncestorFixed ? 'fixed' : 'absolute';
         this.renderer.setStyle(this.stepHolder.nativeElement, 'position', position);
         this.renderer.setStyle(this.stepHolder.nativeElement, 'transform', this.step.transformCssStyle);
@@ -177,14 +177,14 @@ export class JoyrideStepComponent implements OnInit, OnDestroy, AfterViewInit {
         this.setStepStyle();
     }
 
-    private getCounter(): string {
+    protected getCounter(): string {
         let stepPosition = this.stepsContainerService.getStepNumber(this.step.name);
         let numberOfSteps = this.stepsContainerService.getStepsCount();
         this.counterData = { step: stepPosition, total: numberOfSteps };
         return stepPosition + '/' + numberOfSteps;
     }
 
-    private setCustomTemplates() {
+    protected setCustomTemplates() {
         this.customContent = this.step.stepContent;
         this.ctx = this.step.stepContentParams;
         this.customPrevButton = this.templateService.getPrevButton();
@@ -213,7 +213,7 @@ export class JoyrideStepComponent implements OnInit, OnDestroy, AfterViewInit {
         return this.stepsContainerService.getStepNumber(this.step.name) === this.stepsContainerService.getStepsCount();
     }
 
-    private setStepStyle() {
+    protected setStepStyle() {
         switch (this.step.position) {
             case 'top': {
                 this.setStyleTop();
@@ -241,7 +241,7 @@ export class JoyrideStepComponent implements OnInit, OnDestroy, AfterViewInit {
         }
     }
 
-    private setStyleTop() {
+    protected setStyleTop() {
         this.stepsContainerService.updatePosition(this.step.name, 'top');
         this.topPosition = this.targetAbsoluteTop - DISTANCE_FROM_TARGET - this.stepHeight;
         this.stepAbsoluteTop = this.targetAbsoluteTop - DISTANCE_FROM_TARGET - this.stepHeight;
@@ -256,7 +256,7 @@ export class JoyrideStepComponent implements OnInit, OnDestroy, AfterViewInit {
         this.autofixTopPosition();
     }
 
-    private setStyleRight() {
+    protected setStyleRight() {
         this.stepsContainerService.updatePosition(this.step.name, 'right');
         this.topPosition = this.targetAbsoluteTop + this.targetHeight / 2 - this.stepHeight / 2;
         this.stepAbsoluteTop = this.targetAbsoluteTop + this.targetHeight / 2 - this.stepHeight / 2;
@@ -271,7 +271,7 @@ export class JoyrideStepComponent implements OnInit, OnDestroy, AfterViewInit {
         this.autofixRightPosition();
     }
 
-    private setStyleBottom() {
+    protected setStyleBottom() {
         this.stepsContainerService.updatePosition(this.step.name, 'bottom');
         this.topPosition = this.targetAbsoluteTop + this.targetHeight + DISTANCE_FROM_TARGET;
         this.stepAbsoluteTop = this.targetAbsoluteTop + this.targetHeight + DISTANCE_FROM_TARGET;
@@ -286,7 +286,7 @@ export class JoyrideStepComponent implements OnInit, OnDestroy, AfterViewInit {
         this.autofixBottomPosition();
     }
 
-    private setStyleLeft() {
+    protected setStyleLeft() {
         this.stepsContainerService.updatePosition(this.step.name, 'left');
         this.topPosition = this.targetAbsoluteTop + this.targetHeight / 2 - this.stepHeight / 2;
         this.stepAbsoluteTop = this.targetAbsoluteTop + this.targetHeight / 2 - this.stepHeight / 2;
@@ -301,7 +301,7 @@ export class JoyrideStepComponent implements OnInit, OnDestroy, AfterViewInit {
         this.autofixLeftPosition();
     }
 
-    private setStyleCenter() {
+    protected setStyleCenter() {
         this.renderer.setStyle(this.stepHolder.nativeElement, 'position', 'fixed');
         this.renderer.setStyle(this.stepHolder.nativeElement, 'top', '50%');
         this.renderer.setStyle(this.stepHolder.nativeElement, 'left', '50%');
@@ -316,14 +316,14 @@ export class JoyrideStepComponent implements OnInit, OnDestroy, AfterViewInit {
         this.showArrow = false;
     }
 
-    private adjustLeftPosition() {
+    protected adjustLeftPosition() {
         if (this.leftPosition < 0) {
             this.arrowLeftPosition = this.arrowLeftPosition + this.leftPosition - DEFAULT_DISTANCE_FROM_MARGIN_LEFT;
             this.leftPosition = DEFAULT_DISTANCE_FROM_MARGIN_LEFT;
         }
     }
 
-    private adjustRightPosition() {
+    protected adjustRightPosition() {
         let currentWindowWidth = document.body.clientWidth;
         if (this.stepAbsoluteLeft + this.stepWidth > currentWindowWidth) {
             let newLeftPos =
@@ -335,14 +335,14 @@ export class JoyrideStepComponent implements OnInit, OnDestroy, AfterViewInit {
         }
     }
 
-    private adjustTopPosition() {
+    protected adjustTopPosition() {
         if (this.stepAbsoluteTop < 0) {
             this.arrowTopPosition = this.arrowTopPosition + this.topPosition - DEFAULT_DISTANCE_FROM_MARGIN_TOP;
             this.topPosition = DEFAULT_DISTANCE_FROM_MARGIN_TOP;
         }
     }
 
-    private adjustBottomPosition() {
+    protected adjustBottomPosition() {
         if (this.stepAbsoluteTop + this.stepHeight > this.documentHeight) {
             let newTopPos =
                 this.topPosition - (this.stepAbsoluteTop + this.stepHeight + DEFAULT_DISTANCE_FROM_MARGIN_BOTTOM - this.documentHeight);
@@ -353,7 +353,7 @@ export class JoyrideStepComponent implements OnInit, OnDestroy, AfterViewInit {
         }
     }
 
-    private autofixTopPosition() {
+    protected autofixTopPosition() {
         if (this.positionAlreadyFixed) {
             this.logger.warn('No step positions found for this step. The step will be centered.');
         } else if (this.targetAbsoluteTop - this.stepHeight - this.arrowSize < 0) {
@@ -362,36 +362,36 @@ export class JoyrideStepComponent implements OnInit, OnDestroy, AfterViewInit {
         }
     }
 
-    private autofixRightPosition() {
+    protected autofixRightPosition() {
         if (this.targetAbsoluteLeft + this.targetWidth + this.stepWidth + this.arrowSize > document.body.clientWidth) {
             this.setStyleBottom();
         }
     }
 
-    private autofixBottomPosition() {
+    protected autofixBottomPosition() {
         if (this.targetAbsoluteTop + this.stepHeight + this.arrowSize + this.targetHeight > this.documentHeight) {
             this.setStyleLeft();
         }
     }
 
-    private autofixLeftPosition() {
+    protected autofixLeftPosition() {
         if (this.targetAbsoluteLeft - this.stepWidth - this.arrowSize < 0) {
             this.setStyleTop();
         }
     }
 
-    private subscribeToResizeEvents(): Subscription {
+    protected subscribeToResizeEvents(): Subscription {
         return this.eventListenerService.resizeEvent.subscribe(() => {
             this.redrawStep();
         });
     }
 
-    private redrawStep() {
+    protected redrawStep() {
         this.updateStepDimensions();
         this.drawStep();
     }
 
-    private getDimensionsByAspectRatio(width: number, height: number, aspectRatio: number) {
+    protected getDimensionsByAspectRatio(width: number, height: number, aspectRatio: number) {
         let calcHeight = (width + height) / (1 + aspectRatio);
         let calcWidth = calcHeight * aspectRatio;
         return {
@@ -399,7 +399,7 @@ export class JoyrideStepComponent implements OnInit, OnDestroy, AfterViewInit {
             height: calcHeight
         };
     }
-    private adjustDimensions(width: number, height: number) {
+    protected adjustDimensions(width: number, height: number) {
         let area = width * height;
         let newWidth = width;
         let newHeight = height;
@@ -416,7 +416,7 @@ export class JoyrideStepComponent implements OnInit, OnDestroy, AfterViewInit {
         };
     }
 
-    private updateStepDimensions() {
+    protected updateStepDimensions() {
         this.stepWidth = this.stepContainer.nativeElement.clientWidth;
         this.stepHeight = this.stepContainer.nativeElement.clientHeight;
     }

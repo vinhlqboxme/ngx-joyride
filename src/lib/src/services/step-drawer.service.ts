@@ -5,12 +5,12 @@ import { JoyrideStep } from '../models/joyride-step.class';
 @Injectable()
 export class StepDrawerService {
 
-    private refMap: { [key: string]: ComponentRef<JoyrideStepComponent>; } = {};
+    protected refMap: { [key: string]: ComponentRef<JoyrideStepComponent>; } = {};
 
     constructor(
-        private readonly componentFactoryResolver: ComponentFactoryResolver,
-        private appRef: ApplicationRef,
-        private injector: Injector
+        protected readonly componentFactoryResolver: ComponentFactoryResolver,
+        protected appRef: ApplicationRef,
+        protected injector: Injector
     ) { }
 
     draw(step: JoyrideStep) {

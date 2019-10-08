@@ -20,7 +20,7 @@
         "directive",
         "demo",
         "ui component",
-        "onboarding", 
+        "onboarding",
         "Angular2"
     ],
     "peerDependencies": {
