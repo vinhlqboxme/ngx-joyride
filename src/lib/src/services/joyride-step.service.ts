@@ -28,10 +28,10 @@ export interface IJoyrideStepService {
 
 @Injectable()
 export class JoyrideStepService implements IJoyrideStepService {
-    protected currentStep: JoyrideStep;
-    protected winTopPosition: number = 0;
-    protected winBottomPosition: number = 0;
-    protected stepsObserver: ReplaySubject<JoyrideStepInfo> = new ReplaySubject<JoyrideStepInfo>();
+    private currentStep: JoyrideStep;
+    private winTopPosition: number = 0;
+    private winBottomPosition: number = 0;
+    private stepsObserver: ReplaySubject<JoyrideStepInfo> = new ReplaySubject<JoyrideStepInfo>();
 
     constructor(
         protected readonly backDropService: JoyrideBackdropService,
@@ -142,7 +142,7 @@ export class JoyrideStepService implements IJoyrideStepService {
 
     protected showStep(actionType: StepActionType) {
         this.currentStep = this.stepsContainerService.get(actionType);
-
+        this.logger.debug("check current step",this.currentStep);
         if (this.currentStep == null) throw new JoyrideStepDoesNotExist('');
         // Scroll the element to get it visible if it's in a scrollable element
         this.scrollIfElementBeyondOtherElements();
@@ -255,5 +255,9 @@ export class JoyrideStepService implements IJoyrideStepService {
             this.drawStep(this.currentStep);
             this.scrollIfStepAndTargetAreNotVisible();
         }
+    }
+
+    public getCurrentStep(): JoyrideStep {
+        return this.currentStep;
     }
 }
