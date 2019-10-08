@@ -1,9 +1,9 @@
-import { Injectable } from '@angular/core';
-import { JoyrideStep } from '../models/joyride-step.class';
-import { Subject } from 'rxjs';
-import { JoyrideOptionsService } from './joyride-options.service';
-import { LoggerService } from './logger.service';
-import { JoyrideError, JoyrideStepOutOfRange } from '../models/joyride-error.class';
+import {Injectable} from '@angular/core';
+import {JoyrideStep} from '../models/joyride-step.class';
+import {Subject} from 'rxjs';
+import {JoyrideOptionsService} from './joyride-options.service';
+import {LoggerService} from './logger.service';
+import {JoyrideError, JoyrideStepOutOfRange} from '../models/joyride-error.class';
 
 const ROUTE_SEPARATOR = '@';
 
@@ -24,7 +24,8 @@ export class JoyrideStepsContainerService {
     public currentStepIndex: number = -2;
     stepHasBeenModified: Subject<JoyrideStep> = new Subject<JoyrideStep>();
 
-    constructor(public readonly stepOptions: JoyrideOptionsService, public readonly logger: LoggerService) {}
+    constructor(public readonly stepOptions: JoyrideOptionsService, public readonly logger: LoggerService) {
+    }
 
     public getFirstStepIndex(): number {
         let firstStep = this.stepOptions.getFirstStep();
@@ -44,7 +45,7 @@ export class JoyrideStepsContainerService {
         this.steps = [];
         this.currentStepIndex = this.getFirstStepIndex() - 1;
         let stepIds = this.stepOptions.getStepsOrder();
-        stepIds.forEach(stepId => this.steps.push({ id: stepId, step: null }));
+        stepIds.forEach(stepId => this.steps.push({id: stepId, step: null}));
     }
 
     addStep(stepToAdd: JoyrideStep) {
@@ -57,6 +58,7 @@ export class JoyrideStepsContainerService {
             this.tempSteps[stepIndexToReplace] = stepToAdd;
         }
     }
+
     get(action: StepActionType): JoyrideStep {
         if (action === StepActionType.NEXT) this.currentStepIndex++;
         else this.currentStepIndex--;
@@ -99,6 +101,7 @@ export class JoyrideStepsContainerService {
             );
         }
     }
+
     getStepNumber(stepName: string): number {
         return this.getStepIndex(stepName) + 1;
     }
@@ -120,4 +123,13 @@ export class JoyrideStepsContainerService {
         let stepName = stepID && stepID.includes(ROUTE_SEPARATOR) ? stepID.split(ROUTE_SEPARATOR)[0] : stepID;
         return stepName;
     }
+
+    isFirstStep(step: JoyrideStep) {
+        return this.getStepNumber(step.name) === 1;
+    }
+
+    isLastStep(step: JoyrideStep) {
+        return this.getStepNumber(step.name) === this.getStepsCount();
+    }
+
 }
