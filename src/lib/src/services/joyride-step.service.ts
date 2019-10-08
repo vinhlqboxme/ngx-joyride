@@ -224,18 +224,19 @@ export class JoyrideStepService implements IJoyrideStepService {
     }
 
     protected scrollIfElementBeyondOtherElements() {
-        if (this.isElementBeyondOthers() === 2) {
-            this.documentService.scrollToTheTop(this.currentStep.targetViewContainer.element);
-        }
-        if (this.isElementBeyondOthers() === 2) {
-            this.documentService.scrollToTheBottom(this.currentStep.targetViewContainer.element);
-        }
-        if (this.isElementBeyondOthers() === 1 && this.documentService.isParentScrollable(this.currentStep.targetViewContainer.element)) {
-            this.documentService.scrollIntoView(this.currentStep.targetViewContainer.element, this.currentStep.isElementOrAncestorFixed);
-        }
-        if (this.isElementBeyondOthers() === 1 && this.documentService.isParentScrollable(this.currentStep.targetViewContainer.element)) {
-            this.currentStep.targetViewContainer.element.nativeElement.scrollIntoView();
-        }
+        // if (this.isElementBeyondOthers() === 2) {
+        //     this.documentService.scrollToTheTop(this.currentStep.targetViewContainer.element);
+        // }
+        // if (this.isElementBeyondOthers() === 2) {
+        //     this.documentService.scrollToTheBottom(this.currentStep.targetViewContainer.element);
+        // }
+        // if (this.isElementBeyondOthers() === 1 && this.documentService.isParentScrollable(this.currentStep.targetViewContainer.element)) {
+        //     this.documentService.scrollIntoView(this.currentStep.targetViewContainer.element, this.currentStep.isElementOrAncestorFixed);
+        // }
+        // if (this.isElementBeyondOthers() === 1 && this.documentService.isParentScrollable(this.currentStep.targetViewContainer.element)) {
+        //     this.currentStep.targetViewContainer.element.nativeElement.scrollIntoView();
+        // }
+        this.documentService.scrollIntoView(this.currentStep.targetViewContainer.element, this.currentStep.isElementOrAncestorFixed);
     }
 
     protected isElementBeyondOthers() {
@@ -244,5 +245,15 @@ export class JoyrideStepService implements IJoyrideStepService {
             this.currentStep.isElementOrAncestorFixed,
             'backdrop'
         );
+    }
+
+    public refreshTour() {
+        if (this.currentStep) {
+            this.scrollIfElementBeyondOtherElements();
+            this.backDropService.redrawTarget(this.currentStep);
+            this.stepDrawerService.remove(this.currentStep);
+            this.drawStep(this.currentStep);
+            this.scrollIfStepAndTargetAreNotVisible();
+        }
     }
 }
