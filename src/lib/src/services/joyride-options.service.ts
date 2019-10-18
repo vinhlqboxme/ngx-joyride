@@ -37,7 +37,7 @@ export interface IJoyrideOptionsService {
 export class JoyrideOptionsService implements IJoyrideOptionsService {
     public themeColor: string = DEFAULT_THEME_COLOR;
     public stepDefaultPosition: string = STEP_DEFAULT_POSITION;
-    public logsEnabled: boolean = true;
+    public logsEnabled: boolean = false;
     public showCounter: boolean = true;
     public showPrevButton: boolean = true;
     public stepsOrder: string[] = [];
